@@ -1,5 +1,7 @@
 const http=require("http");
 const fs=require("fs");
+const url=require("url");
+
 
 const myServer=http.createServer((req,res)=>{
     // call back functions
@@ -7,15 +9,22 @@ const myServer=http.createServer((req,res)=>{
     // console.log(req.headers);
     // console.log(req);
     const log=`${Date.now()}: ${req.url} New Request Recieved! \n`;
+    const myUrl=url.parse(req.url,true);
+    console.log(myUrl);
     fs.appendFile("log.txt",log,(err,data)=>{
-        switch(req.url){
+        switch(myUrl.pathname){
             case "/":res.end("Home Page");
                     break;
-            case "/about":res.end("I am Mayank");
-                    break;
+            case "/about":
+                  const username=myUrl.query.name;
+                  res.end(`Hi ${username}`);
+                  break;
+            case "/search":
+                const search=myUrl.query.search_query;
+                res.end("Here are your results for "+search);
+                break;
             default:res.end("404:Not Found");
         }
-        
     });
 });
 
@@ -24,3 +33,9 @@ const myServer=http.createServer((req,res)=>{
 myServer.listen(8000,()=>console.log("Server Started !"));
 
 // To close the server press CTRL+C
+
+// If you will write this in the loaclhost then in the log file it will store like this 
+// http://localhost:8000/?name=mayank
+// 1711343798929: /?name=mayank New Request Recieved! 
+
+// We are installing npm i url that will parse each component of url to us and give us the result
