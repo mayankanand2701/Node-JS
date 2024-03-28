@@ -1,0 +1,5 @@
+1711595484681:GET:/api/users 
+1711595525895:  GET:  /api/users 
+1711595545391:  GET:  /api/users/1005 
+1711595578294:  GET:  /api/users/999 
+1711595641380:  ::1:  GET:  /api/users/999 
