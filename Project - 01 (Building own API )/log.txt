@@ -3,3 +3,19 @@
 1711595545391:  GET:  /api/users/1005 
 1711595578294:  GET:  /api/users/999 
 1711595641380:  ::1:  GET:  /api/users/999 
+1711600802584:  ::1:  GET:  /api/users/999 
+1711601057336:  ::1:  GET:  /api/users 
+1711601251581:  ::1:  GET:  /api/users 
+1711631696299:  ::1:  GET:  /api/users 
+1711631698793:  ::1:  GET:  / 
+1711631699067:  ::1:  GET:  / 
+1711631702685:  ::1:  GET:  /api/users 
+1711631706233:  ::1:  GET:  /favicon.ico 
+1711631728903:  ::1:  GET:  /api/users 
+1711631824368:  ::1:  POST:  /api/users 
+1711632233911:  ::1:  POST:  /api/users 
+1711632267643:  ::1:  POST:  /api/users 
+1711632366021:  ::1:  POST:  /api/usersss 
+1711632373173:  ::1:  POST:  /api/users 
+1711632524578:  ::1:  GET:  /api/users/9999999 
+1711632549173:  ::1:  GET:  /api/users/1 

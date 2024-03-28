@@ -64,6 +64,13 @@ app.get("/api/users",(req,res)=>{
     // To check the above passed data will be avaible here or not
     // console.log("I am in GET /api/users & my username is ",req.myUserName);
     // It will list all the data on the server
+
+    // to create your new header for your own 
+    // this header will be send during the time of respnose
+    // if you want to add your own header in the request then you need to add it as a key value pair
+    // in postman before sending the request
+    // console.log(req.headers);
+    // res.setHeader("myName","Mayank Anand");
     return res.json(users);
 });
 
@@ -72,6 +79,7 @@ app.get("/api/users",(req,res)=>{
 app.route("/api/users/:id").get((req,res)=>{
     const id=Number(req.params.id);
     const user=users.find(user=>user.id==id);
+    if(!user) return res.status(404).json({Error : "User Not Found !"});
     return res.json(user);
 }).put((req,res)=>{
     // TODO : Edit the user with the id
@@ -90,10 +98,18 @@ app.route("/api/users/:id").get((req,res)=>{
 app.post("/api/users",(req,res)=>{
     // TODO : To create a new User
     const body=req.body;
+    // adding the new status code for the the input validity 
+    if(!body || !body.first_name || !body.last_name || !body.email || !body.gender || !body.job_title)
+    {
+        return res.status(400).json({msg:"All Fields should be Entered !"});
+    }
+
+
     // console.log("Body",body);
     users.push({...body,id:users.length+1});
     fs.writeFile("./MOCK_DATA.json",JSON.stringify(users),(err,data)=>{
-        return res.json({status:"Success",id:users.length});
+        // Status 201 for User Created
+        return res.status(201).json({status:"Success",id:users.length});
     });
 });
 
