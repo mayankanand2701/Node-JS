@@ -4,6 +4,45 @@ const app=express();
 const users=require("./MOCK_DATA.json");
 const port=8000;
 
+// To now connect to MongoDB Database
+// We need to install mongoose which provides the path for connectivity
+// To install mongose run the command npm i mongoose
+// More info about this is given in text.txt
+const mongoose=require("mongoose");
+
+// Connection Stablishing
+mongoose
+.connect("mongodb://127.0.0.1:27017/Project-01")
+.then(()=>console.log("MongoDB Connected "))
+.catch((err)=>console.log("MongoDB Error ",err));
+
+
+// Schema for DataBase
+const userSchema=new mongoose.Schema({
+    firstName:{
+        type:String,
+        required:true
+    },
+    lastName:{
+        type:String,
+    },
+    email:{
+        type:String,
+        required:true,
+        unique:true,
+    },
+    jobTitle:{
+        type:String,
+    },
+    gender:{
+        type:String,
+    },
+});
+
+// Creating a Model
+const User=mongoose.model("user",userSchema);
+
+
 // Express Middleware - Plugin
 // before putting this plugin when the post request was send through postman the ouput was :
 // Body undefined
@@ -95,22 +134,38 @@ app.route("/api/users/:id").get((req,res)=>{
 //     return res.json(user);
 // });
 
-app.post("/api/users",(req,res)=>{
-    // TODO : To create a new User
+// app.post("/api/users",(req,res)=>{
+//     // TODO : To create a new User
+//     const body=req.body;
+//     // adding the new status code for the the input validity 
+//     if(!body || !body.first_name || !body.last_name || !body.email || !body.gender || !body.job_title)
+//     {
+//         return res.status(400).json({msg:"All Fields should be Entered !"});
+//     }
+//     // console.log("Body",body);
+//     users.push({...body,id:users.length+1});
+//     fs.writeFile("./MOCK_DATA.json",JSON.stringify(users),(err,data)=>{
+//         // Status 201 for User Created
+//         return res.status(201).json({status:"Success",id:users.length});
+//     });
+// });
+
+// For Moongose DataBase
+app.post("/api/users",async(req,res)=>{
     const body=req.body;
-    // adding the new status code for the the input validity 
     if(!body || !body.first_name || !body.last_name || !body.email || !body.gender || !body.job_title)
     {
         return res.status(400).json({msg:"All Fields should be Entered !"});
     }
-
-
-    // console.log("Body",body);
-    users.push({...body,id:users.length+1});
-    fs.writeFile("./MOCK_DATA.json",JSON.stringify(users),(err,data)=>{
-        // Status 201 for User Created
-        return res.status(201).json({status:"Success",id:users.length});
-    });
+    const result=await User.create({
+        firstName:body.first_name,
+        lastname:body.last_name,
+        email:body.email,
+        jobTitle:body.job_title,
+        gender:body.gender
+    });  
+    console.log("Result ",result);
+    return res.status(201).json({msg:"Success"});
 });
 
 // app.patch("/api/users/:id",(req,res)=>{
