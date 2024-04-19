@@ -1,8 +1,13 @@
 const express=require("express");
-const urlRoute=require("./routes/url");
 const {connectToMongoDB}=require("./connect");
+const cookieParser=require("cookie-parser");
+const {restrictToLoggedUserOnly}=require("./middlewares/auth");
+
 const URL=require("./models/url");
+
+const urlRoute=require("./routes/url");
 const staticRoute=require("./routes/staticRoutes");
+const userRoute=require("./routes/user");
 
 const app=express();
 const PORT=8001;
@@ -17,6 +22,7 @@ app.set("views",path.resolve("./views"));
 
 app.use(express.json());
 app.use(express.urlencoded({extended:false}));
+app.use(cookieParser());
 
 // Routes for Server Side Rendering
 // app.get("/test",async(req,res)=>{
@@ -41,9 +47,9 @@ app.use(express.urlencoded({extended:false}));
 // });
 
 
-app.use("/url",urlRoute);
-
+app.use("/url",restrictToLoggedUserOnly,urlRoute);
 app.use("/",staticRoute);
+app.use("/user",userRoute);
 
 app.get("/url/:shortId",async(req,res)=>{
     const shortId=req.params.shortId;
