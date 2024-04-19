@@ -48,3 +48,16 @@
 
 // Cookies are good option during server side rendering and in Rest API we generally user headers
 
+// One very Important Question here that can be asked here .
+
+// What if we store sessions in the database in the Case of Statefull 
+
+// But in this case there is two problem :
+// 1.Latency will increase very much for her request now you have to send the request to datbase that is 
+// running on another server makes the request fetch the data and then compare so it can lead to delay of 
+// 200-300 ms.
+
+// 2.If for every query then you will make the read operation then the read bill will increase as in the real
+// world you need to pay for every read and write operation to the database service provider.
+// If any user will refresh the  page 10-12 times the read operation will be counted and bill will incerase.
+// It is also not good idead that we use our databse for the checking the authentication in this way.
